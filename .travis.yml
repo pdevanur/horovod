@@ -1,0 +1,20 @@
+before_install:
+  - sudo apt-get -qq update
+
+install:
+  # openmpi
+  - wget https://www.open-mpi.org/software/ompi/v2.1/downloads/openmpi-2.1.1.tar.gz
+  - gunzip -c openmpi-2.1.1.tar.gz | tar xf -
+  - pushd openmpi-2.1.1 && ./configure --prefix=/usr/local && make -j8 all && sudo make all install && popd
+
+  # tensorflow
+  - pip install --upgrade pip
+  - pip install --quiet tensorflow
+
+  # horovod
+  - python setup.py sdist
+  - sudo ldconfig
+  - pip install dist/horovod-0.9.0.tar.gz
+
+script:
+  - mpirun -allow-run-as-root -np 2 python horovod/tensorflow/mpi_ops_test.py
