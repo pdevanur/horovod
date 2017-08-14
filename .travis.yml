@@ -7,12 +7,12 @@ before_install:
   - sudo apt-get -qq update
   - pip install --upgrade pip
 
+install:
   # openmpi
   - wget https://www.open-mpi.org/software/ompi/v2.1/downloads/openmpi-2.1.1.tar.gz
   - gunzip -c openmpi-2.1.1.tar.gz | tar xf -
   - pushd openmpi-2.1.1 && ./configure --prefix=/usr/local && make -j8 all && sudo make all install && popd && sudo ldconfig
 
-install:
   # tensorflow
   - pip install --quiet tensorflow
 
