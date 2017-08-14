@@ -1,19 +1,23 @@
+language: python
+python:
+  - "2.7"
+  - "3.3"
+
 before_install:
   - sudo apt-get -qq update
+  - pip install --upgrade pip
 
-install:
   # openmpi
   - wget https://www.open-mpi.org/software/ompi/v2.1/downloads/openmpi-2.1.1.tar.gz
   - gunzip -c openmpi-2.1.1.tar.gz | tar xf -
-  - pushd openmpi-2.1.1 && ./configure --prefix=/usr/local && make -j8 all && sudo make all install && popd
+  - pushd openmpi-2.1.1 && ./configure --prefix=/usr/local && make -j8 all && sudo make all install && popd && sudo ldconfig
 
+install:
   # tensorflow
-  - pip install --upgrade pip
   - pip install --quiet tensorflow
 
   # horovod
   - python setup.py sdist
-  - sudo ldconfig
   - pip install dist/horovod-0.9.0.tar.gz
 
 script:
